@@ -111,16 +111,16 @@ public class EarthquakeCityMap extends PApplet {
 	    int yellow = color(255, 255, 0);
 		int red = color(255, 0, 0);
 		int blue = color(0, 0, 255);
-		if (mag < 4) {
+		if (mag <= THRESHOLD_LIGHT) {
 			marker.setColor(blue);
 			}
 		else
-			if(mag > 4.0 & mag < 4.9) {
+			if(mag > THRESHOLD_LIGHT & mag < THRESHOLD_MODERATE) {
 			marker.setColor(yellow);
 		}
 			else
 				marker.setColor(red);
-		// TODO (Step 4): Add code below to style the marker's size and color 
+		// TODO (Step 4): Add code below to style the marker's size and color
 	    // according to the magnitude of the earthquake.  
 	    // Don't forget about the constants THRESHOLD_MODERATE and 
 	    // THRESHOLD_LIGHT, which are declared above.
