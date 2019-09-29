@@ -34,7 +34,7 @@ public class EarthquakeCityMap extends PApplet {
 
 	// IF YOU ARE WORKING OFFLINE, change the value of this variable to true
 	private static final boolean offline = false;
-
+	
 	// Less than this threshold is a light earthquake
 	public static final float THRESHOLD_MODERATE = 5;
 	// Less than this threshold is a minor earthquake
@@ -42,14 +42,14 @@ public class EarthquakeCityMap extends PApplet {
 
 	/** This is where to find the local tiles, for working without an Internet connection */
 	public static String mbTilesString = "blankLight-1-3.mbtiles";
-
+	
 	// The map
 	private UnfoldingMap map;
-
+	
 	//feed with magnitude 2.5+ Earthquakes
-	private String earthquakesURL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.atom";
+	private String earthquakesURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.atom";
 
-
+	
 	public void setup() {
 		size(950, 600, OPENGL);
 
@@ -62,111 +62,78 @@ public class EarthquakeCityMap extends PApplet {
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 			//earthquakesURL = "2.5_week.atom";
 		}
-
+		
 	    map.zoomToLevel(2);
-	    MapUtils.createDefaultEventDispatcher(this, map);
-
+	    MapUtils.createDefaultEventDispatcher(this, map);	
+			
 	    // The List you will populate with new SimplePointMarkers
 	    List<Marker> markers = new ArrayList<Marker>();
-
+	    
 	    //Use provided parser to collect properties for each earthquake
 	    //PointFeatures have a getLocation method
 	    List<PointFeature> earthquakes = ParseFeed.parseEarthquake(this, earthquakesURL);
-
-
-	    // These print statements show you (1) all of the relevant properties
-	    // in the features, and (2) how to get one property and use it
-	    /*
-	    if (earthquakes.size() > 0) {
-	    	PointFeature f = earthquakes.get(0);
-	    	System.out.println(f.getProperties());
-	    	Object magObj = f.getProperty("magnitude");
-	    	float mag = Float.parseFloat(magObj.toString());
-	    	// PointFeatures also have a getLocation method
-	    	//My code
-	    	Location locObj = f.getLocation();
-	    	System.out.println("Location of the earthquake is: " + locObj);
-	    }
-		*/
-
-	    // Here is an example of how to use Processing's color method to generate
-	    // an int that represents the color yellow.
-	    int blue = color(0, 0, 255);
-		int yellow = color(255, 255, 0);
-		int red = color(255, 0, 0);
-
-
-	    //TODO: Add code here as appropriate
-	    //iterate through every PointFeature in list earthquakes and create a
-	    //suitable SimplePointMarker object and add it to the list of Markers
-		if( earthquakes.size() > 0 ) {
-			for( PointFeature feature : earthquakes ){
-		    	SimplePointMarker simplePointMarker = createMarker(feature);
-
-		    	Object magObj = simplePointMarker.getProperty("magnitude");
-		    	float mag = Float.parseFloat(magObj.toString());
-
-		    	if ( mag < 4.0 ){
-					simplePointMarker.setColor(blue);
-					simplePointMarker.setRadius(5);
-				}
-				else if( mag < 5.0 ){
-					simplePointMarker.setColor(yellow);
-					simplePointMarker.setRadius(8);
-				}
-				else {
-					simplePointMarker.setColor(red);
-					simplePointMarker.setRadius(10);
-				}
-
-		    	//set radius of every marker 10
-		    	//I think by default it's 10 only
-		    	//simplePointMarker.setRadius(10f);
-
-		    	//Add the simplePointMarker to the list of markers
-		    	markers.add(simplePointMarker);
-		    }
-		}
-
+	    //TODO (Step 3): Add a loop here that calls createMarker (see below) 
+	    // to create a new SimplePointMarker for each PointFeature in 
+	    // earthquakes.  Then add each new SimplePointMarker to the 
+	    // List markers (so that it will be added to the map in the line below)
+	    for (PointFeature earthquake : earthquakes) {
+	        markers.add(createMarker(earthquake));
+	   }
+	    
+	    // Add the markers to the map so that they are displayed
 	    map.addMarkers(markers);
-	    //shadeMarkers(markers);
-	    MapUtils.createDefaultEventDispatcher(this, map);
 	}
-
-	/*
-	private void shadeMarkers(List<Marker> markers) {
-		for( Marker simplePointMarker : markers ) {
-			Object magObj = simplePointMarker.getProperty("magnitude");
-			float mag = Float.parseFloat(magObj.toString());
-			int blue = color(0, 0, 255);
-			int yellow = color(255, 255, 0);
-			int red = color(255, 0, 0);
-			if (mag < 4.0){
-				simplePointMarker.setColor(blue);
-				((SimplePointMarker)simplePointMarker).setRadius(5);
-			}
-			else if( mag < 5.0 ){
-				simplePointMarker.setColor(yellow);
-				((SimplePointMarker)simplePointMarker).setRadius(8);
-			}
-			else {
-				simplePointMarker.setColor(red);
-				((SimplePointMarker)simplePointMarker).setRadius(10);
-			}
-		}
-	}
+		
+	/* createMarker: A suggested helper method that takes in an earthquake 
+	 * feature and returns a SimplePointMarker for that earthquake
+	 * 
+	 * In step 3 You can use this method as-is.  Call it from a loop in the 
+	 * setp method.  
+	 * 
+	 * TODO (Step 4): Add code to this method so that it adds the proper 
+	 * styling to each marker based on the magnitude of the earthquake.  
 	*/
-
-	// A suggested helper method that takes in an earthquake feature and
-	// returns a SimplePointMarker for that earthquake
-	// TODO: Implement this method and call it from setUp, if it helps
 	private SimplePointMarker createMarker(PointFeature feature)
-	{
-		// finish implementing and use this method, if it helps.
-		//return new SimplePointMarker(feature.getLocation());
-		return new SimplePointMarker(feature.getLocation(), feature.getProperties());
+	{  
+		// To print all of the features in a PointFeature (so you can see what they are)
+		// uncomment the line below.  Note this will only print if you call createMarker 
+		// from setup
+		//System.out.println(feature.getProperties());
+		
+		// Create a new SimplePointMarker at the location given by the PointFeature
+		SimplePointMarker marker = new SimplePointMarker(feature.getLocation());
+		
+		Object magObj = feature.getProperty("magnitude");
+		float mag = Float.parseFloat(magObj.toString());
+		
+		// Here is an example of how to use Processing's color method to generate 
+	    // an int that represents the color yellow.  
+	    int yellow = color(255, 255, 0);
+		int red = color(255, 0, 0);
+		int blue = color(0, 0, 255);
+		if (mag < 4) {
+			marker.setColor(blue);
+			}
+		else
+			if(mag > 4.0 & mag < 4.9) {
+			marker.setColor(yellow);
+		}
+			else
+				marker.setColor(red);
+		// TODO (Step 4): Add code below to style the marker's size and color 
+	    // according to the magnitude of the earthquake.  
+	    // Don't forget about the constants THRESHOLD_MODERATE and 
+	    // THRESHOLD_LIGHT, which are declared above.
+	    // Rather than comparing the magnitude to a number directly, compare 
+	    // the magnitude to these variables (and change their value in the code 
+	    // above if you want to change what you mean by "moderate" and "light")
+	    
+	    
+	    // Finally return the marker
+	    return marker;
+		
 	}
-
+	
 	public void draw() {
 	    background(10);
 	    map.draw();
@@ -175,31 +142,31 @@ public class EarthquakeCityMap extends PApplet {
 
 
 	// helper method to draw key in GUI
-	// TODO: Implement this method to draw the key
-	private void addKey()
-	{
+	// TODO: Implement this method to draw the key 
+	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
-		fill(235,221,218);
-		rect(20, 50, 150, 250);
-
-		//textAlign(CENTER);
-		fill(0,0,0);
-		text("Earthquake Key", 45, 100);
-
-		fill(255, 0, 0);
-		ellipse(35, 137.5f, 10, 10);
-		fill(0,0,0);
-		text("5.0+ Magnitude", 55, 142);
-
-		fill(255, 255, 0);
-		ellipse(35, 175, 8, 8);
-		fill(0,0,0);
-		text("4.0+ Magnitude", 55, 178.5f);
-
-		fill(0, 0, 255);
-		ellipse(35, 212.5f, 5, 5);
-		fill(0,0,0);
-		text("Below 4.0", 55, 216f);
-
+		fill(255, 250, 240);
+		rect(25, 50, 150, 250);
+		
+		fill(0);
+		textAlign(LEFT, CENTER);
+		textSize(12);
+		text("Earthquake Key", 50, 75);
+		
+		fill(color(255, 0, 0));
+		ellipse(50, 125, 15, 15);
+		fill(color(255, 255, 0));
+		ellipse(50, 175, 10, 10);
+		fill(color(0, 0, 255));
+		ellipse(50, 225, 5, 5);
+		
+		fill(0, 0, 0);
+		text("5.0+ Magnitude", 75, 125);
+		text("4.0+ Magnitude", 75, 175);
+		text("Below 4.0", 75, 225);
+	}
+	{	
+		// Remember you can use Processing's graphics methods here
+	
 	}
 }
