@@ -113,6 +113,7 @@ public class EarthquakeCityMap extends PApplet {
 		int blue = color(0, 0, 255);
 		if (mag <= THRESHOLD_LIGHT) {
 			marker.setColor(blue);
+			//Marker.resize(15, 15);
 			}
 		else
 			if(mag > THRESHOLD_LIGHT & mag < THRESHOLD_MODERATE) {
