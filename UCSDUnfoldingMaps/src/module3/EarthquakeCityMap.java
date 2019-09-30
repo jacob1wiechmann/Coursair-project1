@@ -48,7 +48,7 @@ public class EarthquakeCityMap extends PApplet {
 	
 	//feed with magnitude 2.5+ Earthquakes
 	private String earthquakesURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.atom";
-
+	
 	
 	public void setup() {
 		size(950, 600, OPENGL);
@@ -111,16 +111,7 @@ public class EarthquakeCityMap extends PApplet {
 	    int yellow = color(255, 255, 0);
 		int red = color(255, 0, 0);
 		int blue = color(0, 0, 255);
-		if (mag <= THRESHOLD_LIGHT) {
-			marker.setColor(blue);
-			//Marker.resize(15, 15);
-			}
-		else
-			if(mag > THRESHOLD_LIGHT & mag < THRESHOLD_MODERATE) {
-			marker.setColor(yellow);
-		}
-			else
-				marker.setColor(red);
+		
 		// TODO (Step 4): Add code below to style the marker's size and color
 	    // according to the magnitude of the earthquake.  
 	    // Don't forget about the constants THRESHOLD_MODERATE and 
@@ -128,7 +119,19 @@ public class EarthquakeCityMap extends PApplet {
 	    // Rather than comparing the magnitude to a number directly, compare 
 	    // the magnitude to these variables (and change their value in the code 
 	    // above if you want to change what you mean by "moderate" and "light")
-	    
+		if (mag <= THRESHOLD_LIGHT) {
+			marker.setColor(blue);
+			marker.setRadius(5);
+			}
+		else
+			if(mag > THRESHOLD_LIGHT & mag < THRESHOLD_MODERATE) {
+			marker.setColor(yellow);
+			marker.setRadius(10);
+		}
+			else
+				if (mag > THRESHOLD_MODERATE) {
+				marker.setColor(red);
+		marker.setRadius(15);}
 	    
 	    // Finally return the marker
 	    return marker;
