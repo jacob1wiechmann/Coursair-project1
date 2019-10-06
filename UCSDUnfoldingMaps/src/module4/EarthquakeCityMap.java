@@ -169,8 +169,8 @@ public class EarthquakeCityMap extends PApplet {
 		// If isInCountry ever returns true, isLand should return true.
 		for (Marker m : countryMarkers) {
 			// TODO: Finish this method using the helper method isInCountry
-			isInCountry(earthquake,m); 
-			return true;
+			if(isInCountry(earthquake,m)) { 
+			return true;}
 		}
 		
 		
@@ -190,11 +190,12 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// One (inefficient but correct) approach is to:
 		//   Loop over all of the countries, e.g. using 
+		int deathwater = 0;
 		
 		for (Marker cm : countryMarkers) { 
 			int countryCount = 0;
 			String Name = (String)cm.getProperty("name");
-			int deathwater = 0;
+			
 			for (Marker eq : quakeMarkers) {
 		        	if (eq instanceof LandQuakeMarker) {
 		        		EarthquakeMarker m = (EarthquakeMarker)eq;
@@ -212,13 +213,15 @@ public class EarthquakeCityMap extends PApplet {
 		    			
 		    			System.out.println(Name + ":" + countryCount);
 		        }
-		        	if (countryCount == 0) {
-		        		deathwater++;
-		        		
-		        	}
-		        	System.out.println("WaterTime " + deathwater);
-			}
-		
+		}
+		        	for (Marker eq : quakeMarkers) {
+		        		EarthquakeMarker m = (EarthquakeMarker)eq;
+		        	if (m.isOnLand()==false) {
+		        		deathwater++;	
+		    			}	
+		        	
+		}
+		System.out.println("OceanQuake  " + deathwater);
 }
 		
 		//      Inside the loop, first initialize a quake counter.
