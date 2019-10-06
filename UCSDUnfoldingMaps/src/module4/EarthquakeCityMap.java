@@ -142,15 +142,15 @@ public class EarthquakeCityMap extends PApplet {
 		text("Earthquake Key", 50, 75);
 		
 		fill(150, 30, 30);
-		triangle(50, 275-5, 50-5, 275+5, 50+5, 275+5);
-		ellipse(50, 325, 10, 10);
-		rect(50, 375,10,10);
+		triangle(50, 100-5, 50-5, 100+5, 50+5, 100+5);
+		ellipse(50, 125, 10, 10);
+		rect(50-5, 150-5,10,10);
 		
 		fill(0, 0, 0);
-		text("5.0+ Magnitude", 75, 125);
-		text("4.0+ Magnitude", 75, 175);
-		text("Below 4.0", 75, 225);
-		text("City Marker",75,275);
+		text("City Marker", 75, 100);
+		text("Land Earthquake", 75, 125);
+		text("Ocean Earthquake", 75, 150);
+		text("Size and Magnetude",50,175);
 	}
 
 	
