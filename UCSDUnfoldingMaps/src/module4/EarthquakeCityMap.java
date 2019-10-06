@@ -35,7 +35,7 @@ public class EarthquakeCityMap extends PApplet {
 	private static final long serialVersionUID = 1L;
 
 	// IF YOU ARE WORKING OFFILINE, change the value of this variable to true
-	private static final boolean offline = false;
+	private static final boolean offline = true;
 	
 	/** This is where to find the local tiles, for working without an Internet connection */
 	public static String mbTilesString = "blankLight-1-3.mbtiles";
@@ -76,7 +76,7 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
+		earthquakesURL = "test1.atom";
 		//earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
@@ -141,17 +141,16 @@ public class EarthquakeCityMap extends PApplet {
 		textSize(12);
 		text("Earthquake Key", 50, 75);
 		
-		fill(color(255, 0, 0));
-		ellipse(50, 125, 15, 15);
-		fill(color(255, 255, 0));
-		ellipse(50, 175, 10, 10);
-		fill(color(0, 0, 255));
-		ellipse(50, 225, 5, 5);
+		fill(150, 30, 30);
+		triangle(50, 275-5, 50-5, 275+5, 50+5, 275+5);
+		ellipse(50, 325, 10, 10);
+		rect(50, 375,10,10);
 		
 		fill(0, 0, 0);
 		text("5.0+ Magnitude", 75, 125);
 		text("4.0+ Magnitude", 75, 175);
 		text("Below 4.0", 75, 225);
+		text("City Marker",75,275);
 	}
 
 	
@@ -187,11 +186,41 @@ public class EarthquakeCityMap extends PApplet {
 	 * */
 	private void printQuakes() 
 	{
+		
 		// TODO: Implement this method
 		// One (inefficient but correct) approach is to:
 		//   Loop over all of the countries, e.g. using 
-		//        for (Marker cm : countryMarkers) { ... }
-		//        
+		
+		for (Marker cm : countryMarkers) { 
+			int countryCount = 0;
+			String Name = (String)cm.getProperty("name");
+			int deathwater = 0;
+			for (Marker eq : quakeMarkers) {
+		        	if (eq instanceof LandQuakeMarker) {
+		        		EarthquakeMarker m = (EarthquakeMarker)eq;
+		        		
+		        		String country = (String)m.getProperty("country");
+		    
+		        		if (Name.equals(country)) {
+		        		
+							countryCount++;}
+		        		
+		        		}
+		        	
+		        	}
+		        	if (countryCount > 0) {
+		    			
+		    			System.out.println(Name + ":" + countryCount);
+		        }
+		        	if (countryCount == 0) {
+		        		deathwater++;
+		        		
+		        	}
+		        	System.out.println("WaterTime " + deathwater);
+			}
+		
+}
+		
 		//      Inside the loop, first initialize a quake counter.
 		//      Then loop through all of the earthquake
 		//      markers and check to see whether (1) that marker is on land
@@ -213,7 +242,7 @@ public class EarthquakeCityMap extends PApplet {
 		//        String country = (String)m.getProperty("country");
 		
 		
-	}
+	
 	
 	
 	
